@@ -5,10 +5,11 @@ on: [ push ]
 jobs:
   build:
     strategy:
-      fail-fast: false
+      # fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        unity-version: [2020.3.25f1, 2019.4.34f1, 2018.4.36f1] # TODO 2017.4.40f1, license no worky
+        # unity-version: [2020.3.25f1, 2019.4.34f1, 2018.4.36f1, 2017.4.40f1]
+        unity-version: [2017.4.40f1]
         arch: [x64, x32]
         scripting-backend: [Mono2x, IL2CPP]
         exclude:
@@ -19,9 +20,13 @@ jobs:
             scripting-backend: IL2CPP
         include:
           - os: ubuntu-latest
-            unity-version: 2018.4.36f1 # TODO 2017.4.40f1
+            unity-version: 2018.4.36f1
             arch: x32
-            scripting-backend: Mono2x          
+            scripting-backend: Mono2x
+          - os: ubuntu-latest
+            unity-version: 2017.4.40f1
+            arch: x32
+            scripting-backend: Mono2x
 
     runs-on: ${{ matrix.os }}
 
@@ -50,7 +55,7 @@ jobs:
           unity-modules: ${{ steps.set-vars.outputs.module }}
 
       - name: Activate Unity
-        uses: js6pak/activate-unity@master
+        uses: js6pak/activate-unity@pre2018
         with:
           unity-username: ${{ secrets.UNITY_USERNAME }}
           unity-password: ${{ secrets.UNITY_PASSWORD }}
